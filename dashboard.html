@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="dashboard.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div class="banner">
-        <h1>Welcome to your Dashboard, <?php echo $_SESSION['username']; ?></h1>
-        <p>Your password is <?php echo $_SESSION['password']; ?></p>
-    </div>
-    <div class="user-info">
-        <!-- User information would go here -->
-    </div>
-    <div class="banner">
-        <h1>You have been hacked!</h1>
-    </div>
+    <?php
+    session_start();
+
+    // Check if user is logged in
+    if (isset($_SESSION['username'])) {
+        $username = $_SESSION['username'];
+        $role = $_SESSION['role'];
+
+        // Display appropriate dashboard based on user role
+        if ($role === 'admin') {
+            include('admin_dashboard.php');
+        } else if ($role === 'user') {
+            include('user_dashboard.php');
+        } else {
+            echo "Invalid user role";
+        }
+    } else {
+        // Redirect to login page if not logged in
+        header("Location: login.php");
+        exit();
+    }
+    ?>
 </body>
 </html>
